@@ -27,10 +27,10 @@ func _physics_process(delta):
 		velocity.x += 1
 	if Input.is_action_pressed("ui_left") || Input.is_key_pressed(KEY_A):
 		velocity.x -= 1
-	if Input.is_action_pressed("ui_down") || Input.is_key_pressed(KEY_S):
-		velocity.y += 1
-	if Input.is_action_pressed("ui_up") || Input.is_key_pressed(KEY_W):
-		velocity.y -= 1
+#	if Input.is_action_pressed("ui_down") || Input.is_key_pressed(KEY_S):
+#		velocity.y += 1
+#	if Input.is_action_pressed("ui_up") || Input.is_key_pressed(KEY_W):
+#		velocity.y -= 1
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 		$AnimatedSprite.play()
@@ -77,6 +77,3 @@ func touched(collision_object):
 	else: 
 		if (life >= 0):
 			get_node("../LifeCounterPlayer").text = str("Lives: ", life)
-
-func _on_RestartButton_pressed():
-	get_tree().reload_current_scene()

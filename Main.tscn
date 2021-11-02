@@ -128,4 +128,4 @@ __meta__ = {
 [connection signal="body_entered" from="Coin1" to="Coin1" method="_on_Coin_body_entered"]
 [connection signal="body_entered" from="Coin2" to="Coin2" method="_on_Coin_body_entered"]
 [connection signal="gameOver" from="Player" to="GameOverAlert" method="_on_Player_gameOver"]
-[connection signal="pressed" from="GameOverAlert/RestartButton" to="Player" method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="GameOverAlert/RestartButton" to="GameOverAlert/RestartButton" method="_on_RestartButton_pressed"]
