@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Coin.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Terreno.tres" type="TileSet" id=2]
@@ -10,10 +10,11 @@
 [ext_resource path="res://Boss.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Boss.gd" type="Script" id=9]
 [ext_resource path="res://assets/backgrounds/static/city-1.jpg" type="Texture" id=10]
-[ext_resource path="res://Player.gd" type="Script" id=11]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=12]
 [ext_resource path="res://GameOverAlert.gd" type="Script" id=13]
 [ext_resource path="res://RestartButton.gd" type="Script" id=14]
+[ext_resource path="res://Door.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Door.gd" type="Script" id=16]
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
@@ -65,17 +66,20 @@ speed = 6300
 [node name="Boss" parent="." instance=ExtResource( 8 )]
 position = Vector2( 512, -1105.15 )
 script = ExtResource( 9 )
-speed = 4200
+
+[node name="Door" parent="." instance=ExtResource( 15 )]
+position = Vector2( 995, 529 )
+script = ExtResource( 16 )
 
 [node name="Coin1" parent="." instance=ExtResource( 1 )]
-position = Vector2( 986, 560 )
+position = Vector2( 946, 557 )
 
 [node name="Coin2" parent="." instance=ExtResource( 1 )]
 position = Vector2( 50, 560 )
 
 [node name="Player" parent="." instance=ExtResource( 12 )]
+position = Vector2( 512, 559 )
 collision_layer = 3
-script = ExtResource( 11 )
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
@@ -125,6 +129,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[connection signal="body_entered" from="Door" to="Door" method="_on_Door_body_entered"]
 [connection signal="body_entered" from="Coin1" to="Coin1" method="_on_Coin_body_entered"]
 [connection signal="body_entered" from="Coin2" to="Coin2" method="_on_Coin_body_entered"]
 [connection signal="gameOver" from="Player" to="GameOverAlert" method="_on_Player_gameOver"]

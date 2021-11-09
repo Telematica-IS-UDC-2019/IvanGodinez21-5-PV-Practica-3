@@ -11,6 +11,7 @@ signal gameOver
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$Timer.start()
 	screen_size = get_viewport_rect().size
 	pass
 
@@ -22,37 +23,43 @@ func start(pos):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	var velocity = Vector2()  # The player's movement vector.
-	
+
+	if Input.is_key_pressed(KEY_SPACE):
+		$Timer.start()
+		$AnimationPlayer.play("Action")
 	if Input.is_action_pressed("ui_right") || Input.is_key_pressed(KEY_D):
+		$Timer.start()
 		velocity.x += 1
 	if Input.is_action_pressed("ui_left") || Input.is_key_pressed(KEY_A):
+		$Timer.start()
 		velocity.x -= 1
 #	if Input.is_action_pressed("ui_down") || Input.is_key_pressed(KEY_S):
+#		$Timer.start()
 #		velocity.y += 1
 #	if Input.is_action_pressed("ui_up") || Input.is_key_pressed(KEY_W):
+#		$Timer.start()
 #		velocity.y -= 1
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
-		$AnimatedSprite.play()
-	else:
-		$AnimatedSprite.stop()
+		$AnimationPlayer.play("Walk")
 	
 	#position += velocity * delta
 	#position.x = clamp(position.x, 0, screen_size.x)
 	#position.y = clamp(position.y, 0, screen_size.y)
 	
 	if velocity.x != 0:
-		$AnimatedSprite.animation = "right"
-		$AnimatedSprite.flip_v = false
+		$AnimationPlayer.play("Walk")
+		$Sprite.flip_v = false
 		# See the note below about boolean assignment
-		$AnimatedSprite.flip_h = velocity.x < 0
+		$Sprite.flip_h = velocity.x < 0
 	elif velocity.y != 0:
-		$AnimatedSprite.animation = "up"
-		$AnimatedSprite.flip_v = velocity.y > 0
+		$AnimationPlayer.play("Up")
+		$Sprite.flip_v = velocity.y > 0
 	
 	move_and_slide(velocity * delta)
 	
 	if (get_slide_count() > 0):
+		print(get_slide_count())
 		for i in range(get_slide_count()):
 			if "Enemy" in get_slide_collision(i).collider.name || "Boss" in get_slide_collision(i).collider.name:
 				touched(get_slide_collision(i).collider.name)
@@ -66,7 +73,7 @@ func touched(collision_object):
 	life -= 1
 	if (life > 0):
 		position.x = 512
-		position.y = 560
+		position.y = 559
 		start(position)
 	else:
 		$CollisionShape2D.set_deferred("disabled", true)
@@ -77,3 +84,7 @@ func touched(collision_object):
 	else: 
 		if (life >= 0):
 			get_node("../LifeCounterPlayer").text = str("Lives: ", life)
+
+
+func _on_Timer_timeout():
+	$AnimationPlayer.play("Idle")

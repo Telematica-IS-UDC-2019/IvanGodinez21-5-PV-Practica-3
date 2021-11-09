@@ -1,40 +1,102 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://assets/images/players/player1/player1_walk2.png" type="Texture" id=1]
-[ext_resource path="res://assets/images/players/player1/player1_up1.png" type="Texture" id=2]
-[ext_resource path="res://assets/images/players/player1/player1_up2.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/characters/craftpix-net-481510-free-townspeople-cyberpunk-pixel-art/3/Complete.png" type="Texture" id=1]
+[ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://assets/sounds/classic_hurt.wav" type="AudioStream" id=4]
-[ext_resource path="res://assets/images/players/player1/player1_walk1.png" type="Texture" id=5]
-
-[sub_resource type="SpriteFrames" id=1]
-animations = [ {
-"frames": [ ExtResource( 5 ), ExtResource( 1 ) ],
-"loop": true,
-"name": "right",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 2 ), ExtResource( 3 ) ],
-"loop": true,
-"name": "up",
-"speed": 5.0
-} ]
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 57.9559
-height = 21.7901
+radius = 36.7491
+height = 46.5017
+
+[sub_resource type="Animation" id=7]
+resource_name = "Action"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.0253454, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 6, 11 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Idle"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 3 ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 3 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "Walk"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 12, 17 ]
+}
 
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 512, 560 )
 scale = Vector2( 0.25, 0.25 )
 collision_mask = 3
+script = ExtResource( 2 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 1 )
-animation = "right"
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 26, -18 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 1 )
+hframes = 6
+vframes = 3
+frame = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -0.749146, 0.749146 )
+position = Vector2( -4.76837e-07, 3.99988 )
 shape = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Action = SubResource( 7 )
+anims/Idle = SubResource( 5 )
+anims/RESET = SubResource( 6 )
+anims/Walk = SubResource( 4 )
 
 [node name="PainSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 4.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
